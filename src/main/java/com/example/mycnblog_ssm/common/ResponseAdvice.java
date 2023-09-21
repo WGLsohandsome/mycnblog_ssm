@@ -1,0 +1,36 @@
+package com.example.mycnblog_ssm.common;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
+import org.springframework.core.MethodParameter;
+import org.springframework.http.MediaType;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import java.util.HashMap;
+
+/**
+ * 同一返回封装
+ */
+@ControllerAdvice
+public class ResponseAdvice implements ResponseBodyAdvice {
+
+    @Override
+    public boolean supports(MethodParameter returnType, Class converterType) {
+        return true;
+    }
+
+    @SneakyThrows
+    @Override
+    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+        if (body instanceof HashMap) return body; //本身已经封装好直接返回
+
+        if (body instanceof String){ //String类型
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(AjaxResult.success(body));
+        }
+        return AjaxResult.success(body);
+    }
+}
