@@ -8,6 +8,8 @@
     <title>注册页面</title>
     <link rel="stylesheet" href="css/conmmon.css">
     <link rel="stylesheet" href="css/login.css">
+<!--    引入jquery-->
+    <script src="js/jquery.min.js"></script>
 </head>
 
 <body>
@@ -37,13 +39,62 @@
             </div>
             <div class="row">
                 <span>确认密码</span>
-                <input type="password" id="password">
+                <input type="password" id="password2">
             </div>
             <div class="row">
-                <button id="submit">提交</button>
+                <button id="submit" onclick="mysub()">提交</button>
             </div>
         </div>
     </div>
 </body>
+<script>
+        function mysub(){
+                // 非空校验
+                var username = jQuery("#username");
+                var password = jQuery("#password")
+                var password2 = jQuery("#password2")
+                if(username.val()==""){
+                    alert("请输入用户名")
+                    username.focus();
+                    return false;
+                }
+                if(password.val()==""){
+                    alert("请输入密码")
+                    password.focus();
+                    return false;
+                }
+                if(password2.val()==""){
+                    alert("请输入确认密码")
+                    password2.focus();
+                    return false;
+                }
+                if(password.val()!=password2.val()){
+                    alert("两次输入密码不一致");
+                    password.focus();
+                    return false;
+                }
+                // 发送ajax
+                jQuery.ajax({
+                    url:"/user/reg",
+                    type:"Post",
+                    data:{
+                        username:username.val(),
+                        password:password.val()
+                    },
+                    success:function(result){
+                        if(result.code==200 && result.data == 1){
+                            alert("注册成功")
+                            if(confirm("是否现在登陆?")){
+                                location.href = "login.html";
+                            }
+                        }else{
+                            alert("注册失败")
+                        }
+                    }
+
+                })
+               
+        }
+</script>
 
 </html>
