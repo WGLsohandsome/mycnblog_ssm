@@ -13,6 +13,7 @@
     <script src="editor.md/editormd.js"></script>
     <script src="editor.md/lib/marked.min.js"></script>
     <script src="editor.md/lib/prettify.min.js"></script>
+    <script src="js/tools.js"></script>
 </head>
 
 <body>
@@ -32,7 +33,7 @@
         <div class="container-left">
             <div class="card">
                 <img src="img/doge.jpg" class="avtar" alt="">
-                <h3>比特小可爱</h3>
+                <h3 id="username">比特小可爱</h3>
                 <a href="http:www.github.com">github 地址</a>
                 <div class="counter">
                     <span>文章</span>
@@ -48,9 +49,12 @@
         <div class="container-right">
             <div class="blog-content">
                 <!-- 博客标题 -->
-                <h3>我的第一篇博客</h3>
+                <h3 id = title></h3>
                 <!-- 博客时间 -->
-                <div class="date">2021-06-02</div>
+                <div  class="date">
+                    <span id="data"></span> &nbsp;&nbsp;&nbsp;&nbsp;
+                    访问量:<span id="rcount"></span>
+                </div>
                 <!-- 博客正文 -->
                 <div id="editorDiv">
 
@@ -59,6 +63,7 @@
         </div>
     </div>
     <script type="text/javascript">
+            var articleinfo = null;
             var editormd;
             function initEdit(md){
                 editormd = editormd.markdownToHTML("editorDiv", {
@@ -67,6 +72,49 @@
                 // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
                 });
             }
+
+            function myInfo(uid){
+                jQuery.ajax({
+                            url:"/user/myinfobyuid",
+                            type:"Post",
+                            data:{"uid":uid},
+                            success:function(result){
+                                if(result.code==200 && result.data!=null){
+                                    jQuery("#username").text(result.data.username);
+                                }
+                            },
+                            error:function(err){
+                    
+                            }
+                        });
+            }
+
+            
+            function getArtDetail(){
+                var aid = getURLParam("id");
+                if(aid!=null && aid >=0){
+                    jQuery.ajax({
+                        url:"/art/detail",
+                        type:"Post",
+                        data:{"aid":aid},
+                        success:function(result){
+                            if(result.code==200 && result.data!=null){
+                                var art = result.data;
+                                jQuery("#title").text(art.title);
+                                jQuery("#data").text(art.createtime);
+                                jQuery("#rcount").text(art.rcount);
+                                editormd = editormd.markdownToHTML("editorDiv",{
+                                    markdown : art.content
+                                });
+                                // myInfo
+                            }
+                        }
+                    })
+                }
+            }
+            getArtDetail();
+
+            
             
     </script> 
 </body>

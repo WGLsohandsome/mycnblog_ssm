@@ -3,7 +3,7 @@ package com.example.mycnblog_ssm.model;
 import lombok.Data;
 
 @Data
-public class articleinfo {
+public class ArticleInfo {
     private int id;
     private String password;
     private String title;

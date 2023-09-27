@@ -48,10 +48,28 @@ public class UserController {
             return 1;
         }
     }
+    @RequestMapping("/logout")
+    public boolean logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session!=null &&
+                session.getAttribute(Constant.session_userinfo_key)!=null){
+            session.removeAttribute(Constant.session_userinfo_key);
+        }
+        return true;
+    }
 
     @RequestMapping("/hi")
     public String sayHi() {
         return "Hi,blog";
+    }
+
+    @RequestMapping("/myinfo")
+    public UserInfo myInfo(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session!=null && session.getAttribute(Constant.session_userinfo_key)!=null){
+           return  (UserInfo) session.getAttribute(Constant.session_userinfo_key);
+        }
+        return null;
     }
 
 
