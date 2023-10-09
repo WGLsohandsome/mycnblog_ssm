@@ -8,4 +8,7 @@
     <select id="login" resultType="com.example.mycnblog_ssm.model.UserInfo">
         select * from userinfo where username=#{username} and password=#{password}
     </select>
+    <select id="getUserByName" resultType="com.example.mycnblog_ssm.model.UserInfo">
+        select * from userinfo where username=#{username}
+    </select>
 </mapper>

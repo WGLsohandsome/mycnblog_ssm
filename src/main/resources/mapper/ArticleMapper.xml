@@ -11,4 +11,10 @@
     <select id="getDetail" resultType="com.example.mycnblog_ssm.model.ArticleInfo">
         select * from articleinfo where id = #{aid}
     </select>
+    <select id="getlist" resultType="com.example.mycnblog_ssm.model.ArticleInfo">
+        select * from articleinfo limit #{psize} offset #{offset}
+    </select>
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(*) from articleinfo
+    </select>
 </mapper>

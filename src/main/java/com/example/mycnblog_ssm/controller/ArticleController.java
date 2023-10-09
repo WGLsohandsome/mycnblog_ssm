@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -20,6 +21,15 @@ import java.util.Objects;
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
+
+    @RequestMapping("/list")
+    public List<ArticleInfo> getList(Integer pindex,Integer psize){
+        if(pindex==null || psize==null){
+            return null;
+        }
+        int offset = (pindex-1)*psize;
+        return articleService.getList(offset,psize);
+    }
 
     @RequestMapping("/mylist")
     public List<ArticleInfo> getMyList(HttpServletRequest request) {
@@ -54,5 +64,17 @@ public class ArticleController {
     @RequestMapping("/update")
     public int update(HttpServletRequest request,String title,Integer aid,String content){
         return articleService.update(aid, Objects.requireNonNull(SessionUtil.getLoginUser(request)).getId(),title,content);
+    }
+
+    @RequestMapping("/getTotal")
+    public Integer getTotal(Integer psize){
+        if(psize==null){
+            return null;
+        }
+        int total = articleService.getTotal();
+        if(total <= 0){
+            return null;
+        }
+        return (int) Math.ceil(total*1.0/psize);
     }
 }

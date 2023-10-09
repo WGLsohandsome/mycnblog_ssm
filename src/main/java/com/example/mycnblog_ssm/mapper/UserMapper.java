@@ -9,4 +9,6 @@ public interface UserMapper {
 
     public int add(@Param("username") String username,@Param("password") String password);
     public UserInfo login(@Param("username") String username, @Param("password") String password);
+
+    UserInfo getUserByName(@Param("username")String username);
 }

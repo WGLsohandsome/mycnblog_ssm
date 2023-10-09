@@ -2,6 +2,8 @@ package com.example.mycnblog_ssm.controller;
 
 import com.example.mycnblog_ssm.common.AjaxResult;
 import com.example.mycnblog_ssm.common.Constant;
+import com.example.mycnblog_ssm.common.SecurityUtil;
+import com.example.mycnblog_ssm.common.SessionUtil;
 import com.example.mycnblog_ssm.model.UserInfo;
 import com.example.mycnblog_ssm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,10 @@ public class UserController {
 
     @RequestMapping("/reg")
     public Object reg(String username, String password) {
-//        todo:非空校验
         if (!StringUtils.hasLength(username) || !StringUtils.hasLength(password)) {
             return AjaxResult.fail(-1, "非法请求");
         }
-        int result = userService.add(username, password);
+        int result = userService.add(username, SecurityUtil.encrypt(password));
         if (result == 1) {
             return AjaxResult.success("注册成功", result);
         }
@@ -37,22 +38,28 @@ public class UserController {
         if (!StringUtils.hasLength(username) || !StringUtils.hasLength(password)) {
             return 0;
         }
-        UserInfo userInfo = userService.login(username, password);
+
+        UserInfo userInfo = userService.getUserByName(username);
         if (userInfo == null || userInfo.getId() <= 0) {
             return 0;
         } else {
-//            成功登录
+            boolean result = SecurityUtil.decrypt(password, userInfo.getPassword());
+            if (result) {
+                //            成功登录
 //            保存到session
-            HttpSession session = request.getSession();
-            session.setAttribute(Constant.session_userinfo_key,userInfo);
-            return 1;
+                HttpSession session = request.getSession();
+                session.setAttribute(Constant.session_userinfo_key, userInfo);
+                return 1;
+            }
         }
+        return -1;
     }
+
     @RequestMapping("/logout")
-    public boolean logout(HttpServletRequest request){
+    public boolean logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if(session!=null &&
-                session.getAttribute(Constant.session_userinfo_key)!=null){
+        if (session != null &&
+                session.getAttribute(Constant.session_userinfo_key) != null) {
             session.removeAttribute(Constant.session_userinfo_key);
         }
         return true;
@@ -64,10 +71,10 @@ public class UserController {
     }
 
     @RequestMapping("/myinfo")
-    public UserInfo myInfo(HttpServletRequest request){
+    public UserInfo myInfo(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if(session!=null && session.getAttribute(Constant.session_userinfo_key)!=null){
-           return  (UserInfo) session.getAttribute(Constant.session_userinfo_key);
+        if (session != null && session.getAttribute(Constant.session_userinfo_key) != null) {
+            return (UserInfo) session.getAttribute(Constant.session_userinfo_key);
         }
         return null;
     }

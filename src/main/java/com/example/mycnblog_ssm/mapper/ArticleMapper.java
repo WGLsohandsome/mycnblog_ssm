@@ -16,4 +16,8 @@ public interface ArticleMapper {
 
     public int update(@Param("aid") Integer aid, @Param("title") String title, @Param("content")String Content,
     @Param("uid")Integer uid);
+
+    List<ArticleInfo> getlist(Integer offset, Integer psize);
+
+    public int getTotal();
 }

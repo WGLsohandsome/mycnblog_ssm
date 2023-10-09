@@ -13,7 +13,7 @@ import java.util.List;
 public class AppConfig implements WebMvcConfigurer {
 
     List<String> excludesPath = Arrays.asList("/**/*.html","/js/**"
-            ,"/editor.md/**","/css/**","/img/**","/user/login","/user/reg","/art/detail");
+            ,"/editor.md/**","/css/**","/img/**","/user/login","/user/reg","/art/detail","/art/list","/art/getTotal");
     @Autowired LoginInterceptor loginInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

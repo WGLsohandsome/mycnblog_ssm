@@ -21,4 +21,12 @@ public class ArticleService {
     public int update(Integer aid,Integer uid,String title,String content){
         return articleMapper.update(aid,title,content,uid);
     }
+
+    public List<ArticleInfo> getList(Integer offset, Integer psize) {
+        return articleMapper.getlist(offset,psize);
+    }
+
+    public int getTotal(){
+        return articleMapper.getTotal();
+    }
 }
