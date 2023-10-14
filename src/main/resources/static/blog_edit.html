@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="editor.md/css/editormd.min.css" />
     <script src="js/jquery.min.js"></script>
     <script src="editor.md/editormd.js"></script>
+    <script src="js/tools.js"></script>
 </head>
 
 <body>
@@ -24,7 +25,7 @@
         <span class="title">我的博客系统</span>
         <!-- 用来占据中间位置 -->
         <span class="spacer"></span>
-        <a href="blog_list.html">主页</a>
+        <a href="blog_list_loged.html">主页</a>
         <a href="blog_edit.html">写博客</a>
         <!-- <a href="login.html">登陆</a> -->
         <a href="#">注销</a>
@@ -33,7 +34,7 @@
     <div class="blog-edit-container">
         <!-- 标题编辑区 -->
         <div class="title">
-            <input type="text" placeholder="在这里写下文章标题">
+            <input id="title" type="text" placeholder="在这里写下文章标题">
             <button onclick="mysub()">发布文章</button>
         </div>
         <!-- 创建编辑器标签 -->
@@ -63,8 +64,38 @@
         // 提交
         function mysub(){
             // alert(editor.getValue()); // 获取值
-            // editor.setValue("#123") // 设置值
-        }
+            var title = jQuery("#title");
+            var content = editor.getValue();
+            if(title.val()==""){
+                title.focus();
+                alert("请输入标题!");
+                return false;
+            }
+            if(content==""){
+                editor.focus();
+                alert("请输入正文!");
+                return false;
+            }
+            jQuery.ajax({
+                        url:"/art/edit",
+                        type:"Post",
+                        data:{"aid":aid,"title":title.val(),"content":content,"time":new Date().toLocaleString()},
+                        success:function(result){
+                            if(result.code==200 && result.data!=null){
+                                alert("修改成功");
+                            }else{
+                                alert("修改失败");
+                            }
+                        },
+                        error:function(err){
+                        if (err!=null && err.status==401){
+                            alert("用户未登录,跳转登录页");
+                            location.href = "/login.html";
+                            }
+                        }
+                    })
+            }
+        
     </script>
 </body>
 

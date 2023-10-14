@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mycnblog_ssm.mapper.ArticleMapper">
+    <insert id="edit">
+        insert into articleinfo(title,content,uid,createtime) values (#{title},#{content},#{uid},#{time})
+    </insert>
     <update id="update">
-        update articleinfo set title = #{title}, content=#{content} where id = #{aid} and uid = ${uid}
+        update articleinfo set title = #{title}, content=#{content}, updatetime = #{time} where id = #{aid} and uid = ${uid}
     </update>
 
     <select id="getMylist" resultType="com.example.mycnblog_ssm.model.ArticleInfo">

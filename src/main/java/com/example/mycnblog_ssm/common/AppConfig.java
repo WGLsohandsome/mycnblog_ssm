@@ -20,6 +20,5 @@ public class AppConfig implements WebMvcConfigurer {
        InterceptorRegistration registration =  registry.addInterceptor(loginInterceptor).addPathPatterns();
        registration.addPathPatterns("/**");
        registration.excludePathPatterns(excludesPath);
-
     }
 }

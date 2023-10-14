@@ -15,9 +15,12 @@ public interface ArticleMapper {
     public ArticleInfo getDetail(@Param("aid")Integer aid);
 
     public int update(@Param("aid") Integer aid, @Param("title") String title, @Param("content")String Content,
-    @Param("uid")Integer uid);
+    @Param("uid")Integer uid,@Param("time")String time);
 
     List<ArticleInfo> getlist(Integer offset, Integer psize);
 
     public int getTotal();
+
+    int edit( @Param("title") String title, @Param("content")String Content,
+             @Param("uid")Integer uid,@Param("time")String time);
 }

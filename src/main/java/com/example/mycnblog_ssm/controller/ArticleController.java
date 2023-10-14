@@ -62,8 +62,8 @@ public class ArticleController {
         return AjaxResult.fail(-1, "查询失败");
     }
     @RequestMapping("/update")
-    public int update(HttpServletRequest request,String title,Integer aid,String content){
-        return articleService.update(aid, Objects.requireNonNull(SessionUtil.getLoginUser(request)).getId(),title,content);
+    public int update(HttpServletRequest request,String title,Integer aid,String content,String time){
+        return articleService.update(aid, Objects.requireNonNull(SessionUtil.getLoginUser(request)).getId(),title,content,time);
     }
 
     @RequestMapping("/getTotal")
@@ -76,5 +76,9 @@ public class ArticleController {
             return null;
         }
         return (int) Math.ceil(total*1.0/psize);
+    }
+    @RequestMapping("/edit")
+    public int edit(HttpServletRequest request,String title,String content,String time){
+        return articleService.edit(Objects.requireNonNull(SessionUtil.getLoginUser(request)).getId(),title,content,time);
     }
 }

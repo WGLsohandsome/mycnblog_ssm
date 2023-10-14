@@ -18,8 +18,8 @@ public class ArticleService {
         return articleMapper.getDetail(aid);
     }
 
-    public int update(Integer aid,Integer uid,String title,String content){
-        return articleMapper.update(aid,title,content,uid);
+    public int update(Integer aid, Integer uid, String title, String content, String time){
+        return articleMapper.update(aid,title,content,uid,time);
     }
 
     public List<ArticleInfo> getList(Integer offset, Integer psize) {
@@ -28,5 +28,9 @@ public class ArticleService {
 
     public int getTotal(){
         return articleMapper.getTotal();
+    }
+
+    public int edit(int uid, String title, String content, String time) {
+        return articleMapper.edit(title,content,uid,time);
     }
 }

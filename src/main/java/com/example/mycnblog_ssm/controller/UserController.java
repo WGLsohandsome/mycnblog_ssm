@@ -7,6 +7,7 @@ import com.example.mycnblog_ssm.common.SessionUtil;
 import com.example.mycnblog_ssm.model.UserInfo;
 import com.example.mycnblog_ssm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
+@EnableTransactionManagement
 @RequestMapping("/user")
 public class UserController {
     @Autowired
